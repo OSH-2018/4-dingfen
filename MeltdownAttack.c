@@ -104,6 +104,7 @@ int main()
 	  for (j = 0; j < 256; j++) 
 		  _mm_clflush(&array[j * 4096 + DELTA]);
 
+		// meltdown_asm()中的参数是根据内核模块存放的地址决定的
 	  if (sigsetjmp(jbuf, 1) == 0) { meltdown_asm(0xffffffffc0b7b000+k); }
 
 	  reloadSideChannelImproved();
