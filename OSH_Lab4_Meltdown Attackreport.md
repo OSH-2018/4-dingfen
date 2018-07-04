@@ -110,11 +110,11 @@ array[kernel_data * 4096 + DELTA] += 1;
 
 实验攻击结果可以参见下面两张截图。
 
-![1](/home/dingfeng/桌面/4-dingfen/1.png)
+![1](/home/dingfeng/4-dingfen/1.png)
 
 
 
-![2](/home/dingfeng/桌面/4-dingfen/2.png)
+![2](/home/dingfeng/4-dingfen/2.png)
 
 #### 关于正确率和速度
 
